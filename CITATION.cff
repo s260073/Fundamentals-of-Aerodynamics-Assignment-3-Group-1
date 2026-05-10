@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+authors:
+  - family-names: Andrea
+    given-names: Scardino
+  - family-names: Christopher
+    given-names: Brown
+  - family-names: Søren
+    given-names: Skovborg
+title: "Assignment 3 Code"
+version: 1.0
+identifiers:
+  - type: doi
+date-released: 2025-05-10
