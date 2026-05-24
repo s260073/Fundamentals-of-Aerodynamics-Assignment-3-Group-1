@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & BASE ────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --space:   #080C18;
+  --mars:    #B83A1C;
+  --dust:    #C85C24;
+  --amber:   #C47E1A;
+  --teal:    #1A7A68;
+  --sand:    #EDE5CF;
+  --cream:   #FAF8F3;
+  --border:  #D8D0B8;
+  --text:    #1C1206;
+  --muted:   #6A5540;
+  --light:   #C8A870;
+  --blue:    #2A5C9A;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  background: #fff;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* ── POSTER SHELL ────────────────────────────────────────────────────────── */
+.poster {
+  width: 594mm;
+  height: 841mm;
+  display: flex;
+  flex-direction: column;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  line-height: 1.44;
+  color: var(--text);
+  background: var(--cream);
+  overflow: hidden;
+}
+
+/* ── HEADER ──────────────────────────────────────────────────────────────── */
+.poster-header {
+  background: var(--space);
+  padding: 13mm 22mm 12mm;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 14mm;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+/* subtle star-dust texture effect via radial gradients */
+.poster-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 70% 50%, rgba(184,58,28,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 80% at 15% 50%, rgba(200,92,36,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.poster-subtitle {
+  font-size: 15px;
+  color: var(--light);
+  font-weight: 300;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.poster-title {
+  font-family: 'EB Garamond', serif;
+  font-size: 54px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  margin-bottom: 11px;
+  letter-spacing: -0.3px;
+  position: relative;
+}
+
+.poster-title em {
+  color: #E8946A;
+  font-style: normal;
+}
+
+.poster-authors {
+  font-size: 17px;
+  color: #C4D4E8;
+  font-weight: 300;
+  position: relative;
+}
+
+.poster-meta {
+  text-align: right;
+  font-size: 15px;
+  color: var(--light);
+  font-weight: 300;
+  white-space: nowrap;
+  position: relative;
+}
+
+.poster-meta img {
+  width: 110px;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  margin-bottom: 10px;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+/* ── ACCENT BAR ──────────────────────────────────────────────────────────── */
+.accent-bar {
+  height: 5px;
+  background: linear-gradient(90deg, var(--mars) 0%, var(--dust) 40%, var(--amber) 70%, var(--mars) 100%);
+  flex: 0 0 auto;
+}
+
+/* ── BODY ────────────────────────────────────────────────────────────────── */
+.poster-body {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.col {
+  padding: 7mm 8mm 4mm;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+.col:last-child { border-right: none; }
+
+/* ── SECTIONS ────────────────────────────────────────────────────────────── */
+.section { margin-bottom: 5mm; }
+
+.section-title {
+  font-family: 'EB Garamond', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--space);
+  border-left: 5px solid var(--mars);
+  padding-left: 9px;
+  margin-bottom: 7px;
+  line-height: 1.15;
+}
+
+.section p {
+  font-size: 16px;
+  line-height: 1.38;
+  color: #2A1C0E;
+  margin-bottom: 5px;
+}
+
+/* ── STAT CARDS ──────────────────────────────────────────────────────────── */
+.stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm;
+  margin-bottom: 5mm;
+}
+
+.stat-card {
+  background: var(--space);
+  color: #fff;
+  border-radius: 6px;
+  padding: 4mm 4mm;
+  text-align: center;
+  border-top: 3px solid var(--mars);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--light);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.stat-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.stat-sub {
+  font-size: 12px;
+  color: #C8A870;
+  margin-top: 2px;
+}
+
+/* ── KPI CARDS ───────────────────────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5mm;
+  margin-bottom: 4mm;
+}
+
+.kpi-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--mars);
+  border-radius: 5px;
+  padding: 3.5mm 3mm;
+  text-align: center;
+}
+
+.kpi-card.dust-top  { border-top-color: var(--dust); }
+.kpi-card.amber-top { border-top-color: var(--amber); }
+.kpi-card.teal-top  { border-top-color: var(--teal); }
+.kpi-card.blue-top  { border-top-color: var(--blue); }
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 3px;
+}
+
+.kpi-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--space);
+  line-height: 1.1;
+}
+
+.kpi-unit {
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* ── COMPARISON TABLE ────────────────────────────────────────────────────── */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin-bottom: 4mm;
+}
+
+.comparison-table th {
+  background: var(--space);
+  color: #C4D4E8;
+  padding: 6px 8px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.comparison-table th:first-child { border-radius: 4px 0 0 0; }
+.comparison-table th:last-child  { border-radius: 0 4px 0 0; }
+
+.comparison-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border);
+  color: #2A1C0E;
+  vertical-align: middle;
+}
+
+.comparison-table tr:nth-child(even) td { background: var(--sand); }
+
+.comparison-table tr.winner td {
+  background: #F5EDE0;
+  font-weight: 600;
+}
+
+.comparison-table tr.winner td:first-child {
+  border-left: 3px solid var(--mars);
+}
+
+.tag-bad {
+  display: inline-block;
+  background: #FDE8E4;
+  color: #8F2218;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tag-good {
+  display: inline-block;
+  background: #E2F2E6;
+  color: #256030;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tag-warn {
+  display: inline-block;
+  background: #FEF3D8;
+  color: #7A4E00;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.table-note {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* ── HIGHLIGHT BOX ───────────────────────────────────────────────────────── */
+.highlight-box {
+  background: var(--space);
+  color: #DDD5C0;
+  padding: 4mm 5.5mm;
+  border-radius: 6px;
+  margin-bottom: 4mm;
+  font-size: 15px;
+  line-height: 1.38;
+  border-left: 4px solid var(--mars);
+}
+
+.highlight-box strong {
+  display: block;
+  font-family: 'EB Garamond', serif;
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.highlight-box.amber-left { border-left-color: var(--amber); }
+.highlight-box.teal-left  { border-left-color: var(--teal); }
+
+/* ── MATH / RESULT BOXES ─────────────────────────────────────────────────── */
+.math-box {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--dust);
+  border-radius: 5px;
+  padding: 3.5mm 5.5mm;
+  margin-bottom: 3.5mm;
+  font-size: 15.5px;
+  line-height: 1.46;
+}
+
+.math-box.mars-left  { border-left-color: var(--mars); }
+.math-box.amber-left { border-left-color: var(--amber); }
+.math-box.teal-left  { border-left-color: var(--teal); }
+.math-box.blue-left  { border-left-color: var(--blue); }
+
+.math-title {
+  font-family: 'EB Garamond', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--space);
+  margin-bottom: 4px;
+}
+
+.math-result {
+  font-family: 'EB Garamond', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--mars);
+  margin-top: 3px;
+}
+
+/* ── FIGURE BOX ──────────────────────────────────────────────────────────── */
+.fig-box {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2.5mm 2.5mm 1.5mm;
+  margin-bottom: 3.5mm;
+  text-align: center;
+}
+
+.fig-box img {
+  width: 100%;
+  object-fit: contain;
+  border-radius: 3px;
+  display: block;
+}
+
+.fig-box .caption {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* ── BULLET LIST ─────────────────────────────────────────────────────────── */
+.bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 5mm;
+}
+
+.bullet-list li {
+  padding: 4px 0 4px 22px;
+  position: relative;
+  font-size: 16px;
+  color: #2A1C0E;
+  border-bottom: 1px solid #EDE5D0;
+  line-height: 1.35;
+}
+
+.bullet-list li:last-child { border-bottom: none; }
+
+.bullet-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--mars);
+  font-size: 13px;
+  top: 6px;
+}
+
+/* ── CONCLUSION ITEMS ────────────────────────────────────────────────────── */
+.conclusion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conclusion-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 3.5px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14.5px;
+  line-height: 1.32;
+  color: #2A1C0E;
+}
+
+.conclusion-list li:last-child { border-bottom: none; }
+
+.task-chip {
+  display: inline-block;
+  background: var(--mars);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+
+.task-chip.t2 { background: var(--dust); }
+.task-chip.t3 { background: var(--amber); color: #1C1206; }
+.task-chip.t4 { background: var(--teal); }
+.task-chip.t5 { background: var(--blue); }
+.task-chip.t6 { background: #5A3A7A; }
+
+/* ── BADGE ROW ───────────────────────────────────────────────────────────── */
+.badge-row { margin-bottom: 5mm; }
+
+.pro-badge {
+  display: inline-block;
+  background: #E2F0E8;
+  color: #1A5830;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+.warn-badge {
+  display: inline-block;
+  background: #FEF0D8;
+  color: #7A4800;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+/* ── GOAL CARDS ──────────────────────────────────────────────────────────── */
+.card-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm;
+  margin-bottom: 5mm;
+}
+
+.mini-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--mars);
+  border-radius: 5px;
+  padding: 4mm 5mm;
+  font-size: 15px;
+}
+
+.mini-card.dust-top  { border-top-color: var(--dust); }
+.mini-card.amber-top { border-top-color: var(--amber); }
+.mini-card.teal-top  { border-top-color: var(--teal); }
+
+.mini-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--space);
+  margin-bottom: 4px;
+}
+
+.mini-card ul {
+  margin: 0; padding-left: 16px;
+  color: #333;
+}
+
+.mini-card li { margin-bottom: 2px; line-height: 1.3; }
+
+/* ── REFERENCES / FOOTER ─────────────────────────────────────────────────── */
+.ref-section {
+  background: var(--space);
+  color: var(--light);
+  padding: 4mm 22mm;
+  font-size: 12px;
+  line-height: 1.4;
+  display: flex;
+  gap: 8mm;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+
+.ref-item { flex: 1; min-width: 120px; }
+.ref-item strong { color: #C4D4E8; }
+
+.poster-footer {
+  background: #050810;
+  color: var(--light);
+  padding: 3mm 22mm;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 0 auto;
+  border-top: 3px solid var(--mars);
+}
+
+/* ── PRINT ───────────────────────────────────────────────────────────────── */
+@page { size: A1 portrait; margin: 0; }
+
+@media print {
+  html, body {
+    width: 594mm !important;
+    height: 841mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .poster {
+    width: 594mm !important;
+    height: 841mm !important;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="poster">
+
+<!-- ── HEADER ─────────────────────────────────────────────────────────────── -->
+<div class="poster-header">
+  <div>
+    <div class="poster-subtitle">Mars Rotorcraft Aerodynamics · 46110 Fundamentals of Aerodynamics · DTU</div>
+    <div class="poster-title">Aerodynamic Design of a Mars UAV:<br><em>Ingenuity Legacy</em></div>
+    <div class="poster-authors">Søren Skovborg &nbsp;·&nbsp; Andrea Luigi Scardino &nbsp;·&nbsp; Christopher Brown &nbsp;·&nbsp; Group 1</div>
+  </div>
+  <div class="poster-meta">
+    <img src="DTU.png" alt="DTU logo">
+    <div style="line-height:1.8; margin-top:4px;">
+      Aerodynamics<br>
+      May 2026<br>
+      <span style="color:#E8946A;">Exam: 27 May</span>
+    </div>
+  </div>
+</div>
+
+<div class="accent-bar"></div>
+
+<!-- ── BODY ──────────────────────────────────────────────────────────────── -->
+<div class="poster-body">
+
+<!-- ═══════════════════ COL 1 — Background, Baseline & Airfoil ══════════════ -->
+<div class="col">
+
+  <div class="section">
+    <div class="section-title">Mission Overview</div>
+    <p>On <strong>19 April 2021</strong>, NASA's Ingenuity helicopter became the first powered aircraft to fly on another planet, completing 72 flights before a rotor failure ended its mission in January 2024. The thin Martian atmosphere — just 1.6% of Earth's density — makes flight extremely challenging: rotors must spin at high RPM to generate lift, and the very-low Reynolds-number regime fundamentally changes airfoil aerodynamics.</p>
+    <p>This project develops the <strong>first conceptual aerodynamic design</strong> for a next-generation Mars UAV capable of carrying a <strong>2 kg payload</strong>, spanning hover power estimation, configuration selection, airfoil optimisation, and forward-flight wing analysis.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">Mars gravity</div>
+      <div class="stat-value">3.73 m/s²</div>
+      <div class="stat-sub">38% of Earth</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Mars air density</div>
+      <div class="stat-value">0.020 kg/m³</div>
+      <div class="stat-sub">1.6% of Earth</div>
+    </div>
+  </div>
+
+  <div class="stat-row" style="margin-top:-5mm;">
+    <div class="stat-card" style="border-top-color: var(--dust);">
+      <div class="stat-label">Design payload</div>
+      <div class="stat-value">2 kg</div>
+      <div class="stat-sub">vs Ingenuity: 0 kg</div>
+    </div>
+    <div class="stat-card" style="border-top-color: var(--amber);">
+      <div class="stat-label">Ingenuity reference</div>
+      <div class="stat-value">1.8 kg</div>
+      <div class="stat-sub">D = 1.2 m, 2800 rpm</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Task 1 — Ingenuity Power Baseline</div>
+    <p>Momentum theory applied to Ingenuity's coaxial counter-rotating rotor system. The lower rotor operates in the upper rotor's wake (interference factor f = 0.5). A constant effective chord c̄ = 0.071 m is derived from the published blade area.</p>
+
+    <div class="math-box mars-left">
+      <div class="math-title">① Induced velocity (upper rotor)</div>
+      v<sub>i,u</sub> = √(T<sub>u</sub> / 2ρA) = √(3.357 / 2·0.020·1.131) = <strong>8.61 m/s</strong>
+    </div>
+
+    <div class="math-box" style="border-left-color: var(--dust);">
+      <div class="math-title">② Profile power per rotor</div>
+      P₀ = ⅛ ρ c̄ N<sub>b</sub> C<sub>d0</sub> Ω³R⁴ = <strong>23.1 W</strong>
+      <span style="color:var(--muted); font-size:14px;">&nbsp;(C<sub>d0</sub> = 0.02, κ = 1.15)</span>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Upper rotor</div>
+        <div class="kpi-value">56.4 <span class="kpi-unit">W</span></div>
+      </div>
+      <div class="kpi-card amber-top">
+        <div class="kpi-label">Lower rotor</div>
+        <div class="kpi-value">43.7 <span class="kpi-unit">W</span></div>
+      </div>
+      <div class="kpi-card dust-top">
+        <div class="kpi-label">Total system</div>
+        <div class="kpi-value">≈ 100 <span class="kpi-unit">W</span></div>
+      </div>
+    </div>
+    <p style="font-size:13px; color:var(--muted); font-style:italic;">Ingenuity peaks at ≈ 360 W total (rotor + computer + heating). The simplified model underestimates real power but establishes a valid design baseline.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Task 4 — Airfoil Selection for Low-Re Flight</div>
+
+    <div class="math-box blue-left">
+      <div class="math-title">Reynolds number on Mars vs. Earth</div>
+      Re<sub>Mars</sub> / Re<sub>Earth</sub> = (ρ/μ)<sub>Mars</sub> / (ρ/μ)<sub>Earth</sub> ≈ <strong>0.028</strong> &nbsp;→&nbsp; <strong>36× lower</strong><br>
+      Re at r = 0.75R : &nbsp; (0.020)(133)(0.071) / 1.05×10<sup>−5</sup> ≈ <strong>1.8 × 10<sup>4</sup></strong>
+      <div style="font-size:13px; color:var(--muted); margin-top:3px;">Viscous effects dominate; classical airfoils suffer early separation in this regime.</div>
+    </div>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Airfoil</th>
+        <th>C<sub>l,max</sub></th>
+        <th>Low-Re behaviour</th>
+        <th>Type</th>
+      </tr>
+      <tr>
+        <td>ROAMX-0201</td>
+        <td><span class="tag-good">&gt; 1.3</span></td>
+        <td><span class="tag-good">Smooth, stable</span></td>
+        <td>Mars-optimised</td>
+      </tr>
+      <tr>
+        <td>5% circular-arc</td>
+        <td><span class="tag-warn">~ 1.1</span></td>
+        <td><span class="tag-good">Robust laminar</span></td>
+        <td>Thin plate</td>
+      </tr>
+      <tr>
+        <td>CLF5605</td>
+        <td><span class="tag-bad">~ 0.9</span></td>
+        <td><span class="tag-bad">Higher drag</span></td>
+        <td>Ingenuity blade</td>
+      </tr>
+    </table>
+
+    <div class="fig-box">
+      <img src="../Assignment3_Task5/airfoil_stats.png" alt="Airfoil polars">
+      <div class="caption">Fig. 1 — C<sub>l</sub>–α and C<sub>l</sub>–C<sub>d</sub> polars for candidate airfoils at Re ≈ 1.8 × 10<sup>4</sup> (NASA literature data).</div>
+    </div>
+
+    <div class="highlight-box teal-left" style="padding: 5mm 6mm;">
+      <strong>Selected: ROAMX-0201</strong>
+      Highest C<sub>l,max</sub> > 1.3, smooth stall behaviour, purpose-designed for Martian rotorcraft at very-low Reynolds numbers. No turbulator required for conceptual design.
+    </div>
+
+  </div>
+
+</div><!-- /col 1 -->
+
+
+<!-- ═══════════════════════ COL 2 — Design & Battery ════════════════════════ -->
+<div class="col">
+
+  <div class="section">
+    <div class="section-title">Task 2 — Conceptual Design &amp; Configuration</div>
+    <p>Two configurations evaluated for hover with 2 kg payload. A coupled mass–power model scales Ingenuity's component weights (blades, motors, fuselage) with rotor radius and power. Optimal radius minimises total hover power.</p>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Parameter</th>
+        <th>Twin-Rotor</th>
+        <th>Quadcopter ✓</th>
+      </tr>
+      <tr>
+        <td>Number of rotors</td>
+        <td>2</td>
+        <td><strong>4</strong></td>
+      </tr>
+      <tr>
+        <td>Optimal radius</td>
+        <td>0.69 m</td>
+        <td><strong>0.59 m</strong></td>
+      </tr>
+      <tr>
+        <td>Blades per rotor</td>
+        <td>2</td>
+        <td>2</td>
+      </tr>
+      <tr class="winner">
+        <td>Total hover power</td>
+        <td>197.3 W</td>
+        <td>105.4 W</td>
+      </tr>
+      <tr class="winner">
+        <td>Flight time (hover)</td>
+        <td>6.1 min</td>
+        <td>11.4 min</td>
+      </tr>
+    </table>
+
+    <div class="highlight-box" style="padding: 5mm 6mm; margin-bottom: 5mm;">
+      <strong>Quadcopter selected — 47% lower power</strong>
+      Four rotors allow a smaller optimal radius per rotor, reducing induced and profile losses simultaneously. Power drops from 197 W to 105 W; flight time nearly doubles.
+    </div>
+
+    <div class="math-box amber-left">
+      <div class="math-title">Governing equations</div>
+      <div style="font-size:14px; line-height:1.6;">
+        P<sub>i</sub> = √(51.895 m<sub>tot</sub>³ / 2N<sub>rot</sub>² ρπR²) &nbsp;·&nbsp; κ<br>
+        P₀ = 178.7 R⁴ &nbsp;&nbsp; [W, Mars, same Ω]<br>
+        m<sub>tot</sub> = 1.2(1500 + 29·R·N<sub>b</sub>·N<sub>rot</sub> + 2.5·P<sub>tot</sub>) &nbsp;[g]
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card dust-top">
+        <div class="kpi-label">Rotor radius</div>
+        <div class="kpi-value">0.59 <span class="kpi-unit">m</span></div>
+      </div>
+      <div class="kpi-card amber-top">
+        <div class="kpi-label">Hover power</div>
+        <div class="kpi-value">105 <span class="kpi-unit">W</span></div>
+      </div>
+      <div class="kpi-card teal-top">
+        <div class="kpi-label">Flight time</div>
+        <div class="kpi-value">11.4 <span class="kpi-unit">min</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-title">Task 3 — Battery Optimisation</div>
+    <p>The 2 kg payload is replaced with extra battery cells (m<sub>cell</sub> = 47 g, E<sub>cell</sub> = 10/6 Wh). Two competing effects: more cells → more energy <em>and</em> more mass → higher power demand.</p>
+
+    <div class="fig-box">
+      <img src="../Assignment3_Task3/Assignment3_Task3_updated_flight_time_vs_batteries.png" alt="Flight time vs batteries">
+      <div class="caption">Fig. 2 — Flight time vs. number of extra battery cells. Energy gain consistently outweighs the mass penalty across the full 0–42 cell range.</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Optimal batteries</div>
+        <div class="kpi-value">42</div>
+      </div>
+      <div class="kpi-card dust-top">
+        <div class="kpi-label">Max flight time</div>
+        <div class="kpi-value">51.7 <span class="kpi-unit">min</span></div>
+      </div>
+      <div class="kpi-card teal-top">
+        <div class="kpi-label">Improvement</div>
+        <div class="kpi-value">+94%</div>
+      </div>
+    </div>
+
+    <div class="math-box teal-left">
+      <div class="math-title">Optimality condition</div>
+      N<sub>max</sub> = ⌊2 kg / 0.047 kg⌋ = <strong>42 cells</strong><br>
+      Battery mass: 42 × 47 g = 1.97 kg &lt; 2 kg ✓<br>
+      t<sub>flight</sub> = 60 · E<sub>tot</sub> / P<sub>tot</sub> ≈ <strong>51.7 min</strong>
+      <div style="font-size:13px; color:var(--muted); margin-top:3px;">Optimal = payload mass limit. Adding batteries always helps in this configuration.</div>
+    </div>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Configuration</th>
+        <th>Energy</th>
+        <th>Power</th>
+        <th>Flight time</th>
+      </tr>
+      <tr>
+        <td>Original battery only</td>
+        <td>20.0 Wh</td>
+        <td>105.4 W</td>
+        <td>26.6 min</td>
+      </tr>
+      <tr class="winner">
+        <td>+ 42 battery cells</td>
+        <td>90.0 Wh</td>
+        <td>104.5 W</td>
+        <td><strong>51.7 min</strong></td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="section" style="margin-bottom:0;">
+    <div class="section-title">Task 5 — Detailed Rotor Design (BEM)</div>
+    <p>BEM theory with Prandtl tip-loss corrections. Nelder-Mead optimizer (SciPy, 50 elements) minimises hover power over tip chord c<sub>tip</sub>, design AoA α<sub>D</sub>, collective pitch θ, and Ω.</p>
+    <div class="fig-box" style="margin-bottom:0;">
+      <img src="../Assignment3_Task2/bem_results.png" alt="BEM blade distributions" style="width:100%;">
+      <div class="caption">Fig. 3 — Optimised blade: chord, twist &amp; local AoA, spanwise thrust dC<sub>T</sub>/dy, and power loading dC<sub>P</sub>/dy.</div>
+    </div>
+  </div>
+
+</div><!-- /col 2 -->
+
+
+<!-- ═══════════════════════ COL 3 — BEM cont'd, Wing & Conclusions ═══════════ -->
+<div class="col">
+
+  <div class="section">
+    <div class="section-title" style="font-size:18px; color:var(--muted); border-left-color:var(--dust);">Task 5 — Results</div>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Quantity</th>
+        <th>Momentum Theory</th>
+        <th>BEM (Task 5)</th>
+      </tr>
+      <tr>
+        <td>Method</td>
+        <td>Actuator disk</td>
+        <td>Blade element + mom.</td>
+      </tr>
+      <tr>
+        <td>Power per rotor</td>
+        <td>26.4 W</td>
+        <td><strong>107.7 W</strong></td>
+      </tr>
+      <tr class="winner">
+        <td>Total quad power</td>
+        <td>105.4 W</td>
+        <td><strong>430.8 W</strong></td>
+      </tr>
+      <tr>
+        <td>Thrust per rotor</td>
+        <td>—</td>
+        <td>4.27 N ✓</td>
+      </tr>
+    </table>
+
+    <div class="highlight-box amber-left" style="padding: 3mm 5mm;">
+      <strong>BEM power is ~4× higher than momentum theory</strong>
+      Tip losses, hub losses, and blade profile drag absent from the actuator-disk model dominate real performance. Hyperbolic chord and high-twist root deliver required thrust with minimum power.
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-title">Task 6 — Forward Flight &amp; Wing Integration</div>
+
+    <div class="math-box amber-left">
+      <div class="math-title">Mars dynamic pressure at V = 10 m/s</div>
+      q = ½ρV² = ½ · 0.020 · 100 = <strong>1.0 Pa</strong>
+      <div style="font-size:13px; color:var(--muted); margin-top:2px;">≈ 60× lower than Earth at same speed — wing lift is intrinsically tiny on Mars.</div>
+    </div>
+
+    <div class="fig-box">
+      <img src="../Assignment3_Task6/task6_wing_sweep_zoom.png" alt="Wing sweep">
+      <div class="caption">Fig. 4 — Total rotor power vs. wingspan (zoomed). Power barely dips below the no-wing baseline before wing mass dominates. Max reduction: <strong>0.09%</strong>.</div>
+    </div>
+
+    <div class="fig-box">
+      <img src="../Assignment3_Task6/task6_speed_sweep.png" alt="Speed sweep">
+      <div class="caption">Fig. 5 — Total power and rotor tilt angle β vs. flight speed 0–12 m/s. Power dips below hover at low speeds (translational lift).</div>
+    </div>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Result</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>No-wing forward-flight power (V = 10 m/s)</td>
+        <td><strong>234.4 W</strong></td>
+      </tr>
+      <tr>
+        <td>LLT-optimal planform</td>
+        <td>Rect., AR = 9, −3° washout, e = 0.988</td>
+      </tr>
+      <tr>
+        <td>Best achievable power reduction</td>
+        <td><span class="tag-bad">0.09%</span> (target: 10%)</td>
+      </tr>
+      <tr>
+        <td>Density for 10% reduction</td>
+        <td>ρ<sub>w</sub> ≤ 7.0 kg/m³ — <span class="tag-bad">unachievable</span></td>
+      </tr>
+      <tr class="winner">
+        <td>Final design decision</td>
+        <td>Bare quadcopter — <strong>no wing added</strong></td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="section">
+    <div class="section-title">Conclusions</div>
+
+    <ul class="conclusion-list">
+      <li><span class="task-chip">Task 1</span> Ingenuity total rotor power <strong>≈ 100 W</strong> via momentum theory — establishes the design baseline.</li>
+      <li><span class="task-chip t2">Task 2</span> <strong>Quadcopter selected</strong>: 47% lower hover power (105 W vs. 197 W) and 87% longer flight time than twin-rotor.</li>
+      <li><span class="task-chip t3">Task 3</span> <strong>42 extra batteries → 51.7 min</strong> (up from 26.6 min, +94%). Optimal at payload mass limit.</li>
+      <li><span class="task-chip t4">Task 4</span> Re<sub>Mars</sub> ≈ 1.8×10<sup>4</sup> (36× below Earth). <strong>ROAMX-0201</strong> selected for best low-Re performance.</li>
+      <li><span class="task-chip t5">Task 5</span> BEM gives <strong>107.7 W/rotor</strong> — ~4× momentum estimate — due to tip and profile losses.</li>
+      <li><span class="task-chip t6">Task 6</span> Wings impractical on Mars (q = 1.0 Pa); max 0.09% reduction. Final design: <strong>bare quadcopter</strong>, P<sub>fwd</sub> = 234 W at V = 10 m/s.</li>
+    </ul>
+
+    <div class="highlight-box" style="margin-top:4mm; padding:3.5mm 5mm;">
+      <strong>Key takeaway</strong>
+      Mars's atmosphere (ρ = 1.6% of Earth) forces large fast rotors at Re ≈ 10<sup>4</sup>, demands low-Re specific airfoils, and renders fixed wings impractical. BEM reveals that simplified momentum models underestimate real power by ~4×.
+    </div>
+
+  </div>
+
+</div><!-- /col 3 -->
+
+</div><!-- /poster-body -->
+
+<!-- ── REFERENCES ─────────────────────────────────────────────────────────── -->
+<div class="ref-section">
+  <div class="ref-item"><strong>[1]</strong> Koning, W.J.F. et al. Mars Helicopter Rotor Design. NASA TM-2020-002224. NASA Ames Research Center, 2020.</div>
+  <div class="ref-item"><strong>[2]</strong> NASA. Mars Fact Sheet. nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html (accessed 2026-04-14).</div>
+  <div class="ref-item"><strong>[3]</strong> NASA NTRS. Low Reynolds Number Airfoil Performance on Mars. ntrs.nasa.gov/citations/20240004230 (accessed 2026-04-14).</div>
+  <div class="ref-item"><strong>[4]</strong> Leishman, J.G. Principles of Helicopter Aerodynamics. Cambridge University Press, 2000.</div>
+  <div class="ref-item"><strong>[5]</strong> Balaram, B. et al. Mars Helicopter Technology Demonstrator. AIAA 2018-0023 (2018).</div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<div class="poster-footer">
+  <span>DTU — 46110 Fundamentals of Aerodynamics &nbsp;·&nbsp; Group 1 &nbsp;·&nbsp; May 2026</span>
+  <span>s234481 &nbsp;·&nbsp; s234XXX &nbsp;·&nbsp; s234XXX</span>
+</div>
+
+</div><!-- /poster -->
+</body>
+</html>
