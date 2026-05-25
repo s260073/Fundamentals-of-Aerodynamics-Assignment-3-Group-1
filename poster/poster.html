@@ -142,7 +142,7 @@ html, body {
 .col:last-child { border-right: none; }
 
 /* ── SECTIONS ────────────────────────────────────────────────────────────── */
-.section { margin-bottom: 5mm; }
+.section { margin-bottom: 4mm; }
 
 .section-title {
   font-family: 'EB Garamond', serif;
@@ -167,7 +167,7 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3mm;
-  margin-bottom: 5mm;
+  margin-bottom: 4mm;
 }
 
 .stat-card {
@@ -243,6 +243,32 @@ html, body {
 .kpi-unit {
   font-size: 16px;
   color: var(--muted);
+}
+
+.kpi-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.2;
+  letter-spacing: 0.1px;
+}
+
+/* ── INLINE FRACTION (for math-box content) ──────────────────────────────── */
+.frac {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 0.92em;
+  margin: 0 2px;
+}
+.frac > span:first-child {
+  border-bottom: 1.2px solid currentColor;
+  padding: 0 5px 1px;
+}
+.frac > span:last-child {
+  padding: 1px 5px 0;
 }
 
 /* ── COMPARISON TABLE ────────────────────────────────────────────────────── */
@@ -400,6 +426,20 @@ html, body {
   margin-top: 4px;
   font-style: italic;
   line-height: 1.3;
+}
+
+/* ── SIDE-BY-SIDE SUBFIGURES ─────────────────────────────────────────────── */
+.subfig-row {
+  display: flex;
+  gap: 4px;
+  align-items: stretch;
+}
+
+.subfig-row img {
+  width: 50%;
+  object-fit: contain;
+  border-radius: 3px;
+  display: block;
 }
 
 /* ── BULLET LIST ─────────────────────────────────────────────────────────── */
@@ -603,7 +643,7 @@ html, body {
 <!-- ── BODY ──────────────────────────────────────────────────────────────── -->
 <div class="poster-body">
 
-<!-- ═══════════════════ COL 1 — Background, Baseline & Airfoil ══════════════ -->
+<!-- ═══════════════════ COL 1 — Mission, Task 1, Task 2 ════════════════════ -->
 <div class="col">
 
   <div class="section">
@@ -643,14 +683,15 @@ html, body {
     <p>Momentum theory applied to Ingenuity's coaxial counter-rotating rotor system. The lower rotor operates in the upper rotor's wake (interference factor f = 0.5). A constant effective chord c̄ = 0.071 m is derived from the published blade area.</p>
 
     <div class="math-box mars-left">
-      <div class="math-title">① Induced velocity (upper rotor)</div>
-      v<sub>i,u</sub> = √(T<sub>u</sub> / 2ρA) = √(3.357 / 2·0.020·1.131) = <strong>8.61 m/s</strong>
+      <div class="math-title">① Induced velocity &amp; induced power</div>
+      v<sub>i,u</sub> = √(T / 2ρA) = √(3.357 / 2·0.020·1.131) = <strong>8.61 m/s</strong><br>
+      P<sub>i</sub> = κ · T · v<sub>i</sub> &nbsp;→&nbsp; P<sub>i,u</sub> = 1.15 × 3.357 × 8.61 = <strong>33.3 W</strong>
     </div>
 
     <div class="math-box" style="border-left-color: var(--dust);">
-      <div class="math-title">② Profile power per rotor</div>
-      P₀ = ⅛ ρ c̄ N<sub>b</sub> C<sub>d0</sub> Ω³R⁴ = <strong>23.1 W</strong>
-      <span style="color:var(--muted); font-size:14px;">&nbsp;(C<sub>d0</sub> = 0.02, κ = 1.15)</span>
+      <div class="math-title">② Profile power &amp; lower rotor</div>
+      P₀ = ⅛ ρ c̄ N<sub>b</sub> C<sub>d0</sub> Ω³R⁴ = <strong>23.1 W</strong>&nbsp;(C<sub>d0</sub> = 0.02)<br>
+      Lower rotor in upper wake (f = 0.5): P<sub>i,l</sub> = <strong>20.6 W</strong> → P<sub>l,total</sub> = 43.7 W
     </div>
 
     <div class="kpi-grid">
@@ -671,13 +712,191 @@ html, body {
   </div>
 
   <div class="section">
+    <div class="section-title">Task 2 — Conceptual Design &amp; Configuration</div>
+    <p>Two configurations evaluated for hover with 2 kg payload. A coupled mass–power model scales Ingenuity's component weights (blades, motors, fuselage) with rotor radius and power. Optimal radius minimises total hover power.</p>
+    <strong>Component Mass Relationships</strong>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Weight</th>
+        <th>Ingenuity</th>
+        <th>Proposal</th>
+      </tr>
+      <tr>
+        <td>Rotors</td>
+        <td>70 g</td>
+        <td>29.167 g/m</td>
+      </tr>
+      <tr>
+        <td>Motors</td>
+        <td>250 g</td>
+        <td>2.5 P<sub>tot</sub> g</td>
+      </tr>
+      <tr>
+        <td>Structure</td>
+        <td>300 g</td>
+        <td>0.2 m<sub>no-struct</sub> g</td>
+      </tr>
+      <tr>
+        <td>Battery</td>
+        <td>280 g</td>
+        <td>500 g</td>
+      </tr>
+      <tr>
+        <td>Computer</td>
+        <td>900 g</td>
+        <td>1000 g</td>
+      </tr>
+    </table>
+
+    <div class="math-box amber-left">
+      <div class="math-title">Governing equations</div>
+      <div style="font-size:14px; line-height:1.6;">
+        P<sub>i</sub> = √(51.895 m<sub>tot</sub>³ / 2N<sub>rot</sub>² ρπR²) &nbsp;·&nbsp; κ<br>
+        P₀ = 178.7 R⁴ &nbsp;&nbsp; [W, Mars, same Ω]<br>
+        m<sub>tot</sub> = 1.2(1500 + 29·R·N<sub>b</sub>·N<sub>rot</sub> + 2.5·P<sub>tot</sub>) &nbsp;[g]
+      </div>
+    </div>
+
+    <strong>Found minima from solving system:</strong>
+
+    <div class="fig-box">
+      <img src="../Assignment3_Task2/optimal_blades.png" alt="Flight time vs batteries">
+      <div class="caption">Fig. 1 — Power Consumption as a Function of Radius and N<sub>Rotors</sub></div>
+    </div>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Variable</th>
+        <th>Two Rotors</th>
+        <th>Four Rotors ✓</th>
+      </tr>
+      <tr>
+        <td>Radius</td>
+        <td>0.64 m</td>
+        <td><strong>0.53 m</strong></td>
+      </tr>
+      <tr>
+        <td>Blades</td>
+        <td>2</td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td>Structure</td>
+        <td>2.40 kg</td>
+        <td>2.77 kg</td>
+      </tr>
+      <tr class="winner">
+        <td>Power Consumption</td>
+        <td>328.2 W</td>
+        <td>274.6 W</td>
+      </tr>
+      <tr class="winner">
+        <td>Flight Time</td>
+        <td>3.66 min</td>
+        <td>4.7 min</td>
+      </tr>
+    </table>
+
+    <div class="highlight-box" style="padding: 5mm 6mm; margin-bottom: 5mm;">
+      <strong>Quadcopter selected — 16% lower power</strong>
+      Four rotors allow a smaller optimal radius per rotor, reducing induced and profile losses simultaneously. Power drops from 328 W to 275 W; flight time gains 28%.
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card dust-top">
+        <div class="kpi-label">Rotor radius</div>
+        <div class="kpi-value">0.53 <span class="kpi-unit">m</span></div>
+      </div>
+      <div class="kpi-card amber-top">
+        <div class="kpi-label">Hover power</div>
+        <div class="kpi-value">275 <span class="kpi-unit">W</span></div>
+      </div>
+      <div class="kpi-card teal-top">
+        <div class="kpi-label">Flight time</div>
+        <div class="kpi-value">4.7 <span class="kpi-unit">min</span></div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /col 1 -->
+
+
+<!-- ═══════════════════ COL 2 — Task 3, Task 4, Task 5 ═════════════════════ -->
+<div class="col">
+
+  <div class="section">
+    <div class="section-title">Task 3 — Battery Optimisation</div>
+    <p>The 2 kg payload is replaced with extra battery cells (m<sub>cell</sub> = 47 g, E<sub>cell</sub> = 10/6 Wh). Two competing effects: more cells → more energy <em>and</em> more mass → higher power demand.</p>
+
+    <div class="fig-box">
+      <img src="../Assignment3_Task3/Figure_1.png" alt="Flight time vs batteries">
+      <div class="caption">Fig. 1 — Flight time vs. number of extra battery cells. Energy gain consistently outweighs the mass penalty across the full 0–42 cell range.</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Optimal batteries</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-sub">N<sub>max</sub> = ⌊2 / 0.047⌋</div>
+      </div>
+      <div class="kpi-card dust-top">
+        <div class="kpi-label">Max flight time</div>
+        <div class="kpi-value">19.7 <span class="kpi-unit">min</span></div>
+        <div class="kpi-sub">t = 60 · E<sub>tot</sub> / P<sub>tot</sub></div>
+      </div>
+      <div class="kpi-card teal-top">
+        <div class="kpi-label">Improvement</div>
+        <div class="kpi-value">4.5×</div>
+        <div class="kpi-sub">42 × 47 g = 1.97 kg ✓</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted); font-style:italic; margin-top:-1mm; margin-bottom:3mm;">Optimum sits exactly at the payload mass limit — adding batteries always helps in this configuration.</p>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Configuration</th>
+        <th>Energy</th>
+        <th>Power</th>
+        <th>Flight time</th>
+      </tr>
+      <tr>
+        <td>Original battery only</td>
+        <td>20.0 Wh</td>
+        <td>274.6 W</td>
+        <td>4.4 min</td>
+      </tr>
+      <tr class="winner">
+        <td>+ 42 battery cells</td>
+        <td>90.0 Wh</td>
+        <td>274.6 W</td>
+        <td><strong>19.7 min</strong></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
     <div class="section-title">Task 4 — Airfoil Selection for Low-Re Flight</div>
 
     <div class="math-box blue-left">
       <div class="math-title">Reynolds number on Mars vs. Earth</div>
       Re<sub>Mars</sub> / Re<sub>Earth</sub> = (ρ/μ)<sub>Mars</sub> / (ρ/μ)<sub>Earth</sub> ≈ <strong>0.028</strong> &nbsp;→&nbsp; <strong>36× lower</strong><br>
-      Re at r = 0.75R : &nbsp; (0.020)(133)(0.071) / 1.05×10<sup>−5</sup> ≈ <strong>1.8 × 10<sup>4</sup></strong>
-      <div style="font-size:13px; color:var(--muted); margin-top:3px;">Viscous effects dominate; classical airfoils suffer early separation in this regime.</div>
+      <div style="margin-top:4px; text-align:center; line-height:1.7;">
+        Re<sub>0.75R</sub> =
+        <span class="frac">
+          <span>ρ<sub>Mars</sub>&nbsp;V<sub>0.75R</sub>&nbsp;c<sub>0.75R</sub></span>
+          <span>μ<sub>Mars</sub></span>
+        </span>
+        =
+        <span class="frac">
+          <span>(0.020)(133)(0.071)</span>
+          <span>1.05 × 10<sup>−5</sup></span>
+        </span>
+        ≈ <strong>1.8 × 10<sup>4</sup></strong>
+      </div>
+      <div style="font-size:13px; color:var(--muted); margin-top:5px;">Viscous effects dominate; classical airfoils suffer early separation in this regime.</div>
     </div>
 
     <table class="comparison-table">
@@ -708,163 +927,27 @@ html, body {
     </table>
 
     <div class="fig-box">
-      <img src="../Assignment3_Task5/airfoil_stats.png" alt="Airfoil polars">
-      <div class="caption">Fig. 1 — C<sub>l</sub>–α and C<sub>l</sub>–C<sub>d</sub> polars for candidate airfoils at Re ≈ 1.8 × 10<sup>4</sup> (NASA literature data).</div>
+      <div class="subfig-row">
+        <img src="../Assignment3_Task4/cl_AoAT4.png" alt="Cl vs AoA">
+        <img src="../Assignment3_Task4/cl_cdT4.png" alt="Cl vs Cd">
+      </div>
+      <div class="caption">Fig. 2 — C<sub>l</sub>–α (left) and C<sub>l</sub>–C<sub>d</sub> (right) polars for candidate airfoils at Re ≈ 1.8 × 10<sup>4</sup> (NASA literature data).</div>
     </div>
 
     <div class="highlight-box teal-left" style="padding: 5mm 6mm;">
       <strong>Selected: ROAMX-0201</strong>
-      Highest C<sub>l,max</sub> > 1.3, smooth stall behaviour, purpose-designed for Martian rotorcraft at very-low Reynolds numbers. No turbulator required for conceptual design.
+      Highest C<sub>l,max</sub> > 1.3, smooth stall behaviour, purpose-designed for Martian rotorcraft at very-low Reynolds numbers. No turbulator considered for conceptual design.
     </div>
-
-  </div>
-
-</div><!-- /col 1 -->
-
-
-<!-- ═══════════════════════ COL 2 — Design & Battery ════════════════════════ -->
-<div class="col">
-
-  <div class="section">
-    <div class="section-title">Task 2 — Conceptual Design &amp; Configuration</div>
-    <p>Two configurations evaluated for hover with 2 kg payload. A coupled mass–power model scales Ingenuity's component weights (blades, motors, fuselage) with rotor radius and power. Optimal radius minimises total hover power.</p>
-
-    <table class="comparison-table">
-      <tr>
-        <th>Parameter</th>
-        <th>Twin-Rotor</th>
-        <th>Quadcopter ✓</th>
-      </tr>
-      <tr>
-        <td>Number of rotors</td>
-        <td>2</td>
-        <td><strong>4</strong></td>
-      </tr>
-      <tr>
-        <td>Optimal radius</td>
-        <td>0.69 m</td>
-        <td><strong>0.59 m</strong></td>
-      </tr>
-      <tr>
-        <td>Blades per rotor</td>
-        <td>2</td>
-        <td>2</td>
-      </tr>
-      <tr class="winner">
-        <td>Total hover power</td>
-        <td>197.3 W</td>
-        <td>105.4 W</td>
-      </tr>
-      <tr class="winner">
-        <td>Flight time (hover)</td>
-        <td>6.1 min</td>
-        <td>11.4 min</td>
-      </tr>
-    </table>
-
-    <div class="highlight-box" style="padding: 5mm 6mm; margin-bottom: 5mm;">
-      <strong>Quadcopter selected — 47% lower power</strong>
-      Four rotors allow a smaller optimal radius per rotor, reducing induced and profile losses simultaneously. Power drops from 197 W to 105 W; flight time nearly doubles.
-    </div>
-
-    <div class="math-box amber-left">
-      <div class="math-title">Governing equations</div>
-      <div style="font-size:14px; line-height:1.6;">
-        P<sub>i</sub> = √(51.895 m<sub>tot</sub>³ / 2N<sub>rot</sub>² ρπR²) &nbsp;·&nbsp; κ<br>
-        P₀ = 178.7 R⁴ &nbsp;&nbsp; [W, Mars, same Ω]<br>
-        m<sub>tot</sub> = 1.2(1500 + 29·R·N<sub>b</sub>·N<sub>rot</sub> + 2.5·P<sub>tot</sub>) &nbsp;[g]
-      </div>
-    </div>
-
-    <div class="kpi-grid">
-      <div class="kpi-card dust-top">
-        <div class="kpi-label">Rotor radius</div>
-        <div class="kpi-value">0.59 <span class="kpi-unit">m</span></div>
-      </div>
-      <div class="kpi-card amber-top">
-        <div class="kpi-label">Hover power</div>
-        <div class="kpi-value">105 <span class="kpi-unit">W</span></div>
-      </div>
-      <div class="kpi-card teal-top">
-        <div class="kpi-label">Flight time</div>
-        <div class="kpi-value">11.4 <span class="kpi-unit">min</span></div>
-      </div>
-    </div>
-
   </div>
 
   <div class="section">
-    <div class="section-title">Task 3 — Battery Optimisation</div>
-    <p>The 2 kg payload is replaced with extra battery cells (m<sub>cell</sub> = 47 g, E<sub>cell</sub> = 10/6 Wh). Two competing effects: more cells → more energy <em>and</em> more mass → higher power demand.</p>
-
-    <div class="fig-box">
-      <img src="../Assignment3_Task3/Assignment3_Task3_updated_flight_time_vs_batteries.png" alt="Flight time vs batteries">
-      <div class="caption">Fig. 2 — Flight time vs. number of extra battery cells. Energy gain consistently outweighs the mass penalty across the full 0–42 cell range.</div>
-    </div>
-
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Optimal batteries</div>
-        <div class="kpi-value">42</div>
-      </div>
-      <div class="kpi-card dust-top">
-        <div class="kpi-label">Max flight time</div>
-        <div class="kpi-value">51.7 <span class="kpi-unit">min</span></div>
-      </div>
-      <div class="kpi-card teal-top">
-        <div class="kpi-label">Improvement</div>
-        <div class="kpi-value">+94%</div>
-      </div>
-    </div>
-
-    <div class="math-box teal-left">
-      <div class="math-title">Optimality condition</div>
-      N<sub>max</sub> = ⌊2 kg / 0.047 kg⌋ = <strong>42 cells</strong><br>
-      Battery mass: 42 × 47 g = 1.97 kg &lt; 2 kg ✓<br>
-      t<sub>flight</sub> = 60 · E<sub>tot</sub> / P<sub>tot</sub> ≈ <strong>51.7 min</strong>
-      <div style="font-size:13px; color:var(--muted); margin-top:3px;">Optimal = payload mass limit. Adding batteries always helps in this configuration.</div>
-    </div>
-
-    <table class="comparison-table">
-      <tr>
-        <th>Configuration</th>
-        <th>Energy</th>
-        <th>Power</th>
-        <th>Flight time</th>
-      </tr>
-      <tr>
-        <td>Original battery only</td>
-        <td>20.0 Wh</td>
-        <td>105.4 W</td>
-        <td>26.6 min</td>
-      </tr>
-      <tr class="winner">
-        <td>+ 42 battery cells</td>
-        <td>90.0 Wh</td>
-        <td>104.5 W</td>
-        <td><strong>51.7 min</strong></td>
-      </tr>
-    </table>
-
-  </div>
-
-  <div class="section" style="margin-bottom:0;">
     <div class="section-title">Task 5 — Detailed Rotor Design (BEM)</div>
     <p>BEM theory with Prandtl tip-loss corrections. Nelder-Mead optimizer (SciPy, 50 elements) minimises hover power over tip chord c<sub>tip</sub>, design AoA α<sub>D</sub>, collective pitch θ, and Ω.</p>
-    <div class="fig-box" style="margin-bottom:0;">
-      <img src="../Assignment3_Task2/bem_results.png" alt="BEM blade distributions" style="width:100%;">
+
+    <div class="fig-box">
+      <img src="../Assignment3_Task5/airfoil_stats.png" alt="BEM blade distributions">
       <div class="caption">Fig. 3 — Optimised blade: chord, twist &amp; local AoA, spanwise thrust dC<sub>T</sub>/dy, and power loading dC<sub>P</sub>/dy.</div>
     </div>
-  </div>
-
-</div><!-- /col 2 -->
-
-
-<!-- ═══════════════════════ COL 3 — BEM cont'd, Wing & Conclusions ═══════════ -->
-<div class="col">
-
-  <div class="section">
-    <div class="section-title" style="font-size:18px; color:var(--muted); border-left-color:var(--dust);">Task 5 — Results</div>
 
     <table class="comparison-table">
       <tr>
@@ -873,18 +956,13 @@ html, body {
         <th>BEM (Task 5)</th>
       </tr>
       <tr>
-        <td>Method</td>
-        <td>Actuator disk</td>
-        <td>Blade element + mom.</td>
-      </tr>
-      <tr>
         <td>Power per rotor</td>
-        <td>26.4 W</td>
+        <td>68.7 W</td>
         <td><strong>107.7 W</strong></td>
       </tr>
       <tr class="winner">
         <td>Total quad power</td>
-        <td>105.4 W</td>
+        <td>274.6 W</td>
         <td><strong>430.8 W</strong></td>
       </tr>
       <tr>
@@ -895,11 +973,16 @@ html, body {
     </table>
 
     <div class="highlight-box amber-left" style="padding: 3mm 5mm;">
-      <strong>BEM power is ~4× higher than momentum theory</strong>
+      <strong>BEM power is ~1.6× higher than momentum theory</strong>
       Tip losses, hub losses, and blade profile drag absent from the actuator-disk model dominate real performance. Hyperbolic chord and high-twist root deliver required thrust with minimum power.
     </div>
-
   </div>
+
+</div><!-- /col 2 -->
+
+
+<!-- ═══════════════════ COL 3 — Task 6 & Conclusions ═══════════════════════ -->
+<div class="col">
 
   <div class="section">
     <div class="section-title">Task 6 — Forward Flight &amp; Wing Integration</div>
@@ -908,6 +991,15 @@ html, body {
       <div class="math-title">Mars dynamic pressure at V = 10 m/s</div>
       q = ½ρV² = ½ · 0.020 · 100 = <strong>1.0 Pa</strong>
       <div style="font-size:13px; color:var(--muted); margin-top:2px;">≈ 60× lower than Earth at same speed — wing lift is intrinsically tiny on Mars.</div>
+    </div>
+
+    <div class="math-box teal-left" style="font-size:14.5px;">
+      <div class="math-title">Force balance &amp; Glauert rotor model</div>
+      <div style="line-height:1.55;">
+        T cos β = W &nbsp;·&nbsp; T sin β = D<sub>total</sub> &nbsp;·&nbsp; P = κ · T · v<sub>eff</sub><br>
+        v<sub>eff</sub> = V sin β + v<sub>i</sub> &nbsp;(Glauert, iterated to convergence)<br>
+        LLT: e = 1/(1+δ), &nbsp;δ = Σ<sub>n≥2</sub> n(A<sub>n</sub>/A<sub>1</sub>)² &nbsp;→&nbsp; <strong>e = 0.988</strong> (AR 9, −3° washout)
+      </div>
     </div>
 
     <div class="fig-box">
@@ -954,16 +1046,16 @@ html, body {
 
     <ul class="conclusion-list">
       <li><span class="task-chip">Task 1</span> Ingenuity total rotor power <strong>≈ 100 W</strong> via momentum theory — establishes the design baseline.</li>
-      <li><span class="task-chip t2">Task 2</span> <strong>Quadcopter selected</strong>: 47% lower hover power (105 W vs. 197 W) and 87% longer flight time than twin-rotor.</li>
-      <li><span class="task-chip t3">Task 3</span> <strong>42 extra batteries → 51.7 min</strong> (up from 26.6 min, +94%). Optimal at payload mass limit.</li>
+      <li><span class="task-chip t2">Task 2</span> <strong>Quadcopter selected</strong>: 16% lower hover power (275 W vs. 328 W) and 28% longer flight time than twin-rotor.</li>
+      <li><span class="task-chip t3">Task 3</span> <strong>42 extra batteries → 19.7 min</strong> (up from 4.4 min, 4.5×). Optimal at payload mass limit.</li>
       <li><span class="task-chip t4">Task 4</span> Re<sub>Mars</sub> ≈ 1.8×10<sup>4</sup> (36× below Earth). <strong>ROAMX-0201</strong> selected for best low-Re performance.</li>
-      <li><span class="task-chip t5">Task 5</span> BEM gives <strong>107.7 W/rotor</strong> — ~4× momentum estimate — due to tip and profile losses.</li>
+      <li><span class="task-chip t5">Task 5</span> BEM gives <strong>107.7 W/rotor</strong> — ~1.6× momentum estimate — due to tip and profile losses.</li>
       <li><span class="task-chip t6">Task 6</span> Wings impractical on Mars (q = 1.0 Pa); max 0.09% reduction. Final design: <strong>bare quadcopter</strong>, P<sub>fwd</sub> = 234 W at V = 10 m/s.</li>
     </ul>
 
     <div class="highlight-box" style="margin-top:4mm; padding:3.5mm 5mm;">
       <strong>Key takeaway</strong>
-      Mars's atmosphere (ρ = 1.6% of Earth) forces large fast rotors at Re ≈ 10<sup>4</sup>, demands low-Re specific airfoils, and renders fixed wings impractical. BEM reveals that simplified momentum models underestimate real power by ~4×.
+      Mars's atmosphere (ρ = 1.6% of Earth) forces large fast rotors at Re ≈ 10<sup>4</sup>, demands low-Re specific airfoils, and renders fixed wings impractical. BEM reveals that simplified momentum models underestimate real power by ~1.6×.
     </div>
 
   </div>
