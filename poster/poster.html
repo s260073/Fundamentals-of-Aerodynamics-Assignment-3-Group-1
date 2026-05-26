@@ -800,7 +800,7 @@ html, body {
 
     <div class="highlight-box" style="padding: 5mm 6mm; margin-bottom: 5mm;">
       <strong>Quadcopter selected — 16% lower power</strong>
-      Four rotors allow a smaller optimal radius per rotor, reducing induced and profile losses simultaneously. Power drops from 328 W to 275 W; flight time gains 28%.
+      Four rotors allow a smaller optimal radius per rotor, reducing induced and profile losses. Power is reduced from 328 W to 275 W and flight time gains 28%.
     </div>
 
     <div class="kpi-grid">
@@ -832,14 +832,14 @@ html, body {
 
     <div class="fig-box">
       <img src="../Assignment3_Task3/Figure_1.png" alt="Flight time vs batteries">
-      <div class="caption">Fig. 1 — Flight time vs. number of extra battery cells. Energy gain consistently outweighs the mass penalty across the full 0–42 cell range.</div>
+      <div class="caption">Fig. 2 — Flight time vs. number of extra battery cells. Energy gain consistently outweighs the mass penalty across the full 0–42 cell range.</div>
     </div>
 
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-label">Optimal batteries</div>
         <div class="kpi-value">42</div>
-        <div class="kpi-sub">N<sub>max</sub> = ⌊2 / 0.047⌋</div>
+        <div class="kpi-sub">N<sub>42 × 47 g = 1.97 kg</div>
       </div>
       <div class="kpi-card dust-top">
         <div class="kpi-label">Max flight time</div>
@@ -849,11 +849,11 @@ html, body {
       <div class="kpi-card teal-top">
         <div class="kpi-label">Improvement</div>
         <div class="kpi-value">4.5×</div>
-        <div class="kpi-sub">42 × 47 g = 1.97 kg ✓</div>
+        <div class="kpi-sub"> 19.7 / 4.7</div>
       </div>
     </div>
 
-    <p style="font-size:13px; color:var(--muted); font-style:italic; margin-top:-1mm; margin-bottom:3mm;">Optimum sits exactly at the payload mass limit — adding batteries always helps in this configuration.</p>
+    <p style="font-size:13px; color:var(--muted); font-style:italic; margin-top:-1mm; margin-bottom:3mm;">Max(N<sub>Batteries</sub>) below flight time maxima, potential further flight time gains possible with more batteries</p>
 
     <table class="comparison-table">
       <tr>
@@ -863,13 +863,13 @@ html, body {
         <th>Flight time</th>
       </tr>
       <tr>
-        <td>Original battery only</td>
+        <td>Original battery with payload</td>
         <td>20.0 Wh</td>
         <td>274.6 W</td>
         <td>4.4 min</td>
       </tr>
       <tr class="winner">
-        <td>+ 42 battery cells</td>
+        <td>Payload replaced with 42 battery cells</td>
         <td>90.0 Wh</td>
         <td>274.6 W</td>
         <td><strong>19.7 min</strong></td>
@@ -896,7 +896,7 @@ html, body {
         </span>
         ≈ <strong>1.8 × 10<sup>4</sup></strong>
       </div>
-      <div style="font-size:13px; color:var(--muted); margin-top:5px;">Viscous effects dominate; classical airfoils suffer early separation in this regime.</div>
+      <div style="font-size:13px; color:var(--muted); margin-top:5px;">Due to low viscousity, classical airfoils suffer early separation in this regime.</div>
     </div>
 
     <table class="comparison-table">
@@ -931,22 +931,22 @@ html, body {
         <img src="../Assignment3_Task4/cl_AoAT4.png" alt="Cl vs AoA">
         <img src="../Assignment3_Task4/cl_cdT4.png" alt="Cl vs Cd">
       </div>
-      <div class="caption">Fig. 2 — C<sub>l</sub>–α (left) and C<sub>l</sub>–C<sub>d</sub> (right) polars for candidate airfoils at Re ≈ 1.8 × 10<sup>4</sup> (NASA literature data).</div>
+      <div class="caption">Fig. 3 — C<sub>l</sub>–α (left) and C<sub>l</sub>–C<sub>d</sub> (right) polars for candidate airfoils at Re ≈ 1.8 × 10<sup>4</sup> (NASA literature data).</div>
     </div>
 
     <div class="highlight-box teal-left" style="padding: 5mm 6mm;">
       <strong>Selected: ROAMX-0201</strong>
-      Highest C<sub>l,max</sub> > 1.3, smooth stall behaviour, purpose-designed for Martian rotorcraft at very-low Reynolds numbers. No turbulator considered for conceptual design.
+      Highest C<sub>l,max</sub> > 1.3, smooth stall behaviour, purpose-designed for Martian rotorcraft at very-low Reynolds numbers. No turbulator considered for conceptual design, added complexity and weight.
     </div>
   </div>
 
   <div class="section">
     <div class="section-title">Task 5 — Detailed Rotor Design (BEM)</div>
-    <p>BEM theory with Prandtl tip-loss corrections. Nelder-Mead optimizer (SciPy, 50 elements) minimises hover power over tip chord c<sub>tip</sub>, design AoA α<sub>D</sub>, collective pitch θ, and Ω.</p>
+    <p>BEM model (n = 50) using SciPy Nelder-Mead optimizer. From set thrust and Ω minimizes model's power as a function of chord c<sub>l</sub>, effective AoA α<sub>D</sub>, and collective pitch θ, along radius.</p>
 
     <div class="fig-box">
       <img src="../Assignment3_Task5/airfoil_stats.png" alt="BEM blade distributions">
-      <div class="caption">Fig. 3 — Optimised blade: chord, twist &amp; local AoA, spanwise thrust dC<sub>T</sub>/dy, and power loading dC<sub>P</sub>/dy.</div>
+      <div class="caption">Fig. 4 — Optimised blade: chord, twist &amp; local AoA, spanwise thrust dC<sub>T</sub>/dy, and power loading dC<sub>P</sub>/dy.</div>
     </div>
 
     <table class="comparison-table">
@@ -974,7 +974,7 @@ html, body {
 
     <div class="highlight-box amber-left" style="padding: 3mm 5mm;">
       <strong>BEM power is ~1.6× higher than momentum theory</strong>
-      Tip losses, hub losses, and blade profile drag absent from the actuator-disk model dominate real performance. Hyperbolic chord and high-twist root deliver required thrust with minimum power.
+      Tip losses, hub losses, and blade profile drag absent from momentum-based model, BEM shows more realistic result.
     </div>
   </div>
 
@@ -1004,12 +1004,12 @@ html, body {
 
     <div class="fig-box">
       <img src="../Assignment3_Task6/task6_wing_sweep_zoom.png" alt="Wing sweep">
-      <div class="caption">Fig. 4 — Total rotor power vs. wingspan (zoomed). Power barely dips below the no-wing baseline before wing mass dominates. Max reduction: <strong>0.09%</strong>.</div>
+      <div class="caption">Fig. 5 — Total rotor power vs. wingspan (zoomed). Power barely dips below the no-wing baseline before wing mass dominates. Max reduction: <strong>0.09%</strong>.</div>
     </div>
 
     <div class="fig-box">
       <img src="../Assignment3_Task6/task6_speed_sweep.png" alt="Speed sweep">
-      <div class="caption">Fig. 5 — Total power and rotor tilt angle β vs. flight speed 0–12 m/s. Power dips below hover at low speeds (translational lift).</div>
+      <div class="caption">Fig. 6 — Total power and rotor tilt angle β vs. flight speed 0–12 m/s. Power dips below hover at low speeds (translational lift).</div>
     </div>
 
     <table class="comparison-table">
